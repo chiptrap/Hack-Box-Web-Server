@@ -12,8 +12,8 @@ app.use(cors());
 // Connect to the database
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: 'FuckTheChip1233#',
+    user: 'appuser',
+    password: 'StrongPass@123',
     database: 'todolist',
     port: 3306
 });
@@ -61,6 +61,6 @@ app.delete('/tasks/:id', (req, res) => {
     });
 });
 
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
