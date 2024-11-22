@@ -2,45 +2,38 @@ document.addEventListener('DOMContentLoaded', () => {
     const taskInput = document.getElementById('taskInput');
     const addTaskButton = document.getElementById('addTask');
     const taskList = document.getElementById('taskList');
+    const quoteText = document.getElementById('quoteText');
+    const quoteAuthor = document.getElementById('quoteAuthor');
+    const newQuoteButton = document.getElementById('newQuote');
 
     // Function to load tasks from the database
     const loadTasks = async () => {
         try {
-            // Fetch tasks from the backend
             const response = await fetch('backend.php');
             const tasks = await response.json();
 
-            // Clear the current list
             taskList.innerHTML = '';
-
-            // Populate the list with tasks
             tasks.forEach(task => {
                 const listItem = document.createElement('li');
                 listItem.textContent = task.task;
 
-                // Create a delete button for each task
                 const deleteButton = document.createElement('button');
                 deleteButton.textContent = 'Delete';
                 deleteButton.style.marginLeft = '10px';
 
-                // Add event listener to delete the task
                 deleteButton.addEventListener('click', async () => {
                     try {
                         await fetch('backend.php', {
                             method: 'DELETE',
                             body: new URLSearchParams({ id: task.id }),
                         });
-                        // Reload tasks after deletion
                         loadTasks();
                     } catch (error) {
                         console.error('Error deleting task:', error);
                     }
                 });
 
-                // Append the delete button to the list item
                 listItem.appendChild(deleteButton);
-
-                // Add the list item to the task list
                 taskList.appendChild(listItem);
             });
         } catch (error) {
@@ -54,14 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (task) {
             try {
-                // Send the new task to the backend
                 await fetch('backend.php', {
                     method: 'POST',
                     body: new URLSearchParams({ task }),
                 });
-                // Clear the input field
                 taskInput.value = '';
-                // Reload tasks to show the new one
                 loadTasks();
             } catch (error) {
                 console.error('Error adding task:', error);
@@ -71,7 +61,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Event listener for the "Add Task" button
+    // Function to fetch a random quote
+    const fetchQuote = async () => {
+        try {
+            const response = await fetch('https://api.quotable.io/random');
+            const data = await response.json();
+
+            // Display the quote
+            quoteText.textContent = `"${data.content}"`;
+            quoteAuthor.textContent = `- ${data.author}`;
+        } catch (error) {
+            console.error('Error fetching quote:', error);
+            quoteText.textContent = 'Failed to load quote.';
+            quoteAuthor.textContent = '';
+        }
+    };
+
+    // Load tasks on page load
+    loadTasks();
+
+    // Fetch a quote on page load
+    fetchQuote();
+
+    // Add task event listener
     addTaskButton.addEventListener('click', addTask);
 
     // Allow pressing Enter to add a task
@@ -81,6 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Load tasks on page load
-    loadTasks();
+    // Get a new quote on button click
+    newQuoteButton.addEventListener('click', fetchQuote);
 });
