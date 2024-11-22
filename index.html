@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Web Page</title>
+    <title>To-Do List App</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Welcome to My GitHub-Hosted Web Page</h1>
-    <p>This is served from my GitHub repo!</p>
-    <a href="https://example.com">Visit Example</a>
+    <h1>To-Do List App</h1>
+    <div id="app">
+        <!-- Input form for tasks -->
+        <input type="text" id="taskInput" placeholder="Enter a task">
+        <button id="addTask">Add Task</button>
 
-    <!-- Link to the script -->
+        <!-- Task list -->
+        <ul id="taskList"></ul>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
