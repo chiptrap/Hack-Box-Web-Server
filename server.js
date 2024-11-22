@@ -14,7 +14,7 @@ const db = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: 'StrongPass@123s',
-    database: 'todolist'
+    database: 'todolist',
     port: 3306
 });
 
