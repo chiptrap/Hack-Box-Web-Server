@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function to fetch a random quote
     const fetchQuote = async () => {
         try {
-            const response = await fetch('https://api.quotable.io/random');
+            const response = await fetch('http://api.quotable.io/random');
             const data = await response.json();
 
             // Display the quote
