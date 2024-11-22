@@ -1,4 +1,4 @@
-const apiUrl = 'http://localhost:3000/tasks';
+const apiUrl = 'http://127.0.0.1:3000/tasks';
 
 async function fetchTasks() {
     const response = await fetch(apiUrl);
