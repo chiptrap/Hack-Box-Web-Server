@@ -1,21 +1,39 @@
-/* Style for the body */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-    margin: 0;
+#app {
+    width: 300px;
+    margin: 20px auto;
+    text-align: center;
+}
+
+input {
+    width: 70%;
+    padding: 5px;
+}
+
+button {
+    margin: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+ul {
+    list-style-type: none;
     padding: 0;
 }
 
-/* Style for the heading */
-h1 {
-    color: #0056b3;
-    text-align: center;
-    padding-top: 20px;
+li {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
 }
 
-/* Style for the paragraph */
-p {
-    text-align: center;
-    font-size: 18px;
+li span {
+    flex-grow: 1;
+    text-align: left;
+}
+
+li button {
+    margin-left: 5px;
 }
