@@ -1,41 +1,50 @@
-// Function to add a new task to the list
-function addTask() {
-    const taskInput = document.getElementById('task-input');
+const apiUrl = 'http://localhost:3000/tasks';
+
+async function fetchTasks() {
+    const response = await fetch(apiUrl);
+    const tasks = await response.json();
     const taskList = document.getElementById('task-list');
+    taskList.innerHTML = ''; // Clear the list
 
-    // Get the task text from the input field
-    const taskText = taskInput.value.trim();
+    tasks.forEach(task => {
+        const listItem = document.createElement('li');
+        listItem.innerHTML = `
+            <span style="text-decoration: ${task.completed ? 'line-through' : 'none'};">${task.task}</span>
+            <button onclick="completeTask(${task.id})">Complete</button>
+            <button onclick="deleteTask(${task.id})">Remove</button>
+        `;
+        taskList.appendChild(listItem);
+    });
+}
 
-    // Check if the input is empty
-    if (taskText === '') {
+async function addTask() {
+    const taskInput = document.getElementById('task-input');
+    const task = taskInput.value.trim();
+
+    if (task === '') {
         alert('Please enter a task!');
         return;
     }
 
-    // Create a new list item (task)
-    const listItem = document.createElement('li');
-    listItem.innerHTML = `
-        <span>${taskText}</span>
-        <button onclick="markComplete(this)">Complete</button>
-        <button onclick="removeTask(this)">Remove</button>
-    `;
+    await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ task })
+    });
 
-    // Append the new task to the list
-    taskList.appendChild(listItem);
-
-    // Clear the input field
     taskInput.value = '';
+    fetchTasks();
 }
 
-// Function to mark a task as completed
-function markComplete(button) {
-    const taskItem = button.parentElement;
-    const taskText = taskItem.querySelector('span');
-    taskText.style.textDecoration = 'line-through';
+async function completeTask(id) {
+    await fetch(`${apiUrl}/${id}`, { method: 'PUT' });
+    fetchTasks();
 }
 
-// Function to remove a task from the list
-function removeTask(button) {
-    const taskItem = button.parentElement;
-    taskItem.remove();
+async function deleteTask(id) {
+    await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+    fetchTasks();
 }
+
+// Load tasks when the page loads
+fetchTasks();
